@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tusheti Travel Map</title>
+    <!-- Leaflet CSS for map styling -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 20px;
+            width: 90%;
+            max-width: 900px;
+            box-sizing: border-box;
+            overflow: hidden; /* Ensures rounded corners apply correctly */
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #map {
+            height: 500px; /* Default height */
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+        .info-box {
+            background-color: #e6f7ff;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #333;
+            font-size: 0.9em;
+        }
+        .info-box ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        .info-box li {
+            margin-bottom: 5px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                width: 95%;
+            }
+            #map {
+                height: 400px; /* Slightly smaller on tablets */
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px 5px;
+                padding: 10px;
+                width: 98%;
+            }
+            #map {
+                height: 300px; /* Even smaller on mobile */
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tusheti Travel Map</h1>
+        <p style="text-align: center; color: #555;">An interactive visualization of your planned 5-day route through Tusheti, Georgia.</p>
+        <div id="map"></div>
+        <div class="info-box">
+            <h2>Route Details:</h2>
+            <ul>
+                <li><strong>Day 1 (Blue Line):</strong> Tbilisi &rarr; Kvemo Alvani (optional stop) &rarr; Abano Pass &rarr; Omalo</li>
+                <li><strong>Day 2 (Green Line):</strong> Omalo &rarr; Shenako &rarr; Diklo (Horseback riding loop from Omalo)</li>
+                <li><strong>Day 3 (Red Line):</strong> Omalo &rarr; Perekitian Gorge area (exploration) &rarr; Omalo</li>
+                <li><strong>Day 4 (Purple Line):</strong> Omalo &rarr; Bochorna &rarr; Dochu &rarr; Indurta (optional trek) &rarr; Omalo</li>
+                <li><strong>Day 5 (Orange Line):</strong> Omalo &rarr; Tbilisi (return journey, optional thermal springs)</li>
+            </ul>
+            <p><em>Please note: The precise GPS coordinates for some areas (like specific points within gorges) are approximate, and the actual route may vary slightly based on local conditions.</em></p>
+        </div>
+    </div>
+
+    <!-- Leaflet JS library -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Ensure the script runs after the DOM is fully loaded
+        window.onload = function() {
+            // Initialize the map centered on Georgia/Tusheti area
+            const map = L.map('map').setView([42.3, 45.2], 9); // Initial view for Tusheti region
+
+            // Add a tile layer (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Define coordinates for key locations
+            const locations = {
+                tbilisi: [41.7225, 44.7925],
+                kvemoAlvani: [42.054047, 45.356657],
+                abanoPass: [42.2779, 45.5086],
+                omalo: [42.3789, 45.6300],
+                shenako: [42.3719, 45.6625],
+                diklo: [42.3967, 45.6883],
+                bochorna: [42.4025, 45.5864],
+                dochu: [42.390354, 45.555534],
+                indurta: [42.38, 45.50] // Approximate, as exact coordinates were not found
+            };
+
+            // Add markers to the map
+            for (const key in locations) {
+                L.marker(locations[key]).addTo(map)
+                    .bindPopup(`<b>${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</b>`)
+                    .openPopup();
+            }
+
+            // Define routes for each day
+            // Day 1: Tbilisi -> Kvemo Alvani -> Abano Pass -> Omalo
+            const day1Route = L.polyline([
+                locations.tbilisi,
+                locations.kvemoAlvani,
+                locations.abanoPass,
+                locations.omalo
+            ], {color: 'blue'}).addTo(map);
+
+            // Day 2: Omalo -> Shenako -> Diklo -> Omalo (loop for horseback riding)
+            const day2Route = L.polyline([
+                locations.omalo,
+                locations.shenako,
+                locations.diklo,
+                locations.omalo
+            ], {color: 'green'}).addTo(map);
+
+            // Day 3: Omalo -> Perekitian Gorge (approx. represented by a point near Omalo) -> Omalo
+            // For Perekitian Gorge, we'll use a point slightly different from Omalo to show movement.
+            // Let's assume a point near the gorge which is usually accessed from Omalo
+            const perekitianGorgeApprox = [42.40, 45.60]; // Roughly northwest of Omalo
+            L.marker(perekitianGorgeApprox).addTo(map).bindPopup('<b>Perekitian Gorge Area</b>');
+            const day3Route = L.polyline([
+                locations.omalo,
+                perekitianGorgeApprox,
+                locations.omalo
+            ], {color: 'red'}).addTo(map);
+
+            // Day 4: Omalo -> Bochorna -> Dochu -> Indurta (optional) -> Omalo
+            const day4Route = L.polyline([
+                locations.omalo,
+                locations.bochorna,
+                locations.dochu,
+                locations.indurta,
+                locations.omalo
+            ], {color: 'purple'}).addTo(map);
+
+            // Day 5: Omalo -> Tbilisi (return journey) - this is essentially the reverse of Day 1's main path
+            const day5Route = L.polyline([
+                locations.omalo,
+                locations.abanoPass,
+                locations.kvemoAlvani, // Optional thermal springs would be somewhere on this path
+                locations.tbilisi
+            ], {color: 'orange'}).addTo(map);
+
+
+            // Fit map to show all routes
+            const allPoints = [
+                ...day1Route.getLatLngs(),
+                ...day2Route.getLatLngs(),
+                ...day3Route.getLatLngs(),
+                ...day4Route.getLatLngs(),
+                ...day5Route.getLatLngs()
+            ];
+            map.fitBounds(L.latLngBounds(allPoints).pad(0.1)); // Add some padding
+
+            // Adjust map size on window resize
+            window.addEventListener('resize', function() {
+                map.invalidateSize();
+            });
+        };
+    </script>
+</body>
+</html>
