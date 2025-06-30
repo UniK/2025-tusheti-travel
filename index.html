@@ -13,35 +13,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="2025 Tusheti Travel" />
 
+    <!-- Bootstrap 5 -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <!-- Leaflet CSS for map styling -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/style.css" />
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin: 20px;
-            padding: 20px;
-            width: 90%;
-            max-width: 900px;
-            box-sizing: border-box;
-            overflow: hidden; /* Ensures rounded corners apply correctly */
-        }
-        h1, h2 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
         #map {
             height: 500px; /* Default height */
             width: 100%;
@@ -66,37 +44,58 @@
         .info-box li {
             margin-bottom: 5px;
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                padding: 15px;
-                width: 95%;
-            }
-            #map {
-                height: 400px; /* Slightly smaller on tablets */
-            }
-        }
-        @media (max-width: 480px) {
-            .container {
-                margin: 10px 5px;
-                padding: 10px;
-                width: 98%;
-            }
-            #map {
-                height: 300px; /* Even smaller on mobile */
-            }
-            h1 {
-                font-size: 1.5em;
-            }
-            h2 {
-                font-size: 1.2em;
-            }
-        }
     </style>
 </head>
-<body>
+<body id="page-top">
+    <!-- Navigation-->
+    <nav id="mainNav" class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="#page-top">2025 Tusheti</a>
+            <button class="navbar-toggler navbar-toggler-right" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarResponsive" 
+                    aria-controls="navbarResponsive" 
+                    aria-expanded="false" 
+                    aria-label="Toggle navigation"
+                >
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#map">Map</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Masthead-->
+    <header class="masthead">
+        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+            <div class="d-flex justify-content-center">
+                <div class="text-center">
+                    <h1 class="mx-auto my-0 text-uppercase">Tusheti</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">A free, responsive, one page Bootstrap theme created by Start Bootstrap.</h2>
+                    <a class="btn btn-primary" href="#about">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Map -->
+    <section id="map"
+        class="about-section text-center">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <h2 class="text-white mb-4">Built with Bootstrap 5</h2>
+                <div class="col-lg-8">
+                    <h2 class="text-white mb-4">Built with Bootstrap 5</h2>
+                </div>
+            </div>
+            <img class="img-fluid" src="assets/img/ipad.png" alt="..." />
+        </div>
+    </section>
     <div class="container">
         <h1>Tusheti Travel Map</h1>
         <p style="text-align: center; color: #555;">An interactive visualization of your planned 5-day route through Tusheti, Georgia.</p>
@@ -120,12 +119,20 @@
         // Ensure the script runs after the DOM is fully loaded
         window.onload = function() {
             // Initialize the map centered on Georgia/Tusheti area
-            const map = L.map('map').setView([42.3, 45.2], 9); // Initial view for Tusheti region
+            const map = L.map('map', { scrollWheelZoom: false }).setView([42.3, 45.2], 9); // Initial view for Tusheti region
 
-            // Add a tile layer (OpenStreetMap)
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            // Add a tile layer (CartoDB Positron, English labels)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                subdomains: 'abcd',
+                maxZoom: 19
             }).addTo(map);
+
+            // Enable scroll wheel zoom on map click/focus, disable on mouseleave
+            map.on('focus', function() { map.scrollWheelZoom.enable(); });
+            map.on('blur', function() { map.scrollWheelZoom.disable(); });
+            map.on('mouseover', function() { this.getContainer().style.cursor = 'grab'; });
+            map.on('mouseout', function() { map.scrollWheelZoom.disable(); this.getContainer().style.cursor = ''; });
 
             // Define coordinates for key locations
             const locations = {
