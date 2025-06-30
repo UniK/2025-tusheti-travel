@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tusheti Travel Map</title>
+    <title>@025 Tusheti Travel Map</title>
 
     <!-- Open Graph Meta Tags for Social Media Preview -->
     <meta property="og:title" content="Tusheti Travel Map - Your Epic Journey!" />
@@ -43,6 +43,79 @@
         }
         .info-box li {
             margin-bottom: 5px;
+        }
+
+        /* Custom Leaflet layer control for better mobile UX */
+ .leaflet-control-layers {
+   min-width: 140px;
+   text-align: left;
+   font-size: 1em;
+ }
+ .leaflet-control-layers-expanded {
+   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+   border-radius: 10px;
+   padding: 0.5em 0.8em 0.5em 0.8em;
+ }
+ .leaflet-control-layers label {
+   display: block;
+   margin-bottom: 0.3em;
+   cursor: pointer;
+ }
+ .leaflet-control-layers input[type="radio"] {
+   margin-right: 0.5em;
+   transform: scale(1.2);
+ }
+ @media (max-width: 600px) {
+   .leaflet-control-layers {
+     min-width: 110px;
+     font-size: 1.1em;
+   }
+   .leaflet-control-layers-expanded {
+     padding: 0.7em 0.5em 0.7em 0.5em;
+   }
+   .leaflet-control-layers label {
+     margin-bottom: 0.5em;
+     font-size: 1.05em;
+   }
+   .leaflet-control-layers input[type="radio"] {
+     transform: scale(1.4);
+   }
+ }
+        /* Custom Leaflet layer control for better mobile UX */
+        .leaflet-control-layers {
+            min-width: 140px;
+            text-align: left;
+            font-size: 1em;
+        }
+        .leaflet-control-layers-expanded {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            border-radius: 10px;
+            padding: 0.5em 0.8em 0.5em 0.8em;
+        }
+        .leaflet-control-layers label {
+            display: block;
+            margin-bottom: 0.3em;
+            cursor: pointer;
+        }
+        .leaflet-control-layers input[type="radio"] {
+            margin-right: 0.5em;
+            transform: scale(1.2);
+        }
+        @media (max-width: 600px) {
+            .leaflet-control-layers {
+                min-width: 110px;
+                font-size: 1.1em;
+            }
+            .leaflet-control-layers-expanded {
+                padding: 0.7em 0.5em 0.7em 0.5em;
+            }
+            .leaflet-control-layers label {
+                margin-bottom: 0.5em;
+                font-size: 1.05em;
+            }
+            .leaflet-control-layers input[type="radio"] {
+                transform: scale(1.4);
+            }
         }
     </style>
 </head>
@@ -84,49 +157,70 @@
         </div>
     </header>
     <!-- Map -->
-    <section id="map"
-        class="about-section text-center">
-        <div class="container px-4 px-lg-5">
+    <section class="text-center">
+        <div class="container px-4 px-lg-8">
+            <h1>Tusheti Travel Map</h1>
+            <p class="text-muted">
+                An interactive visualization of your planned 5-day route through Tusheti, Georgia.
+            </p>
             <div class="row gx-4 gx-lg-5 justify-content-center">
-                <h2 class="text-white mb-4">Built with Bootstrap 5</h2>
+                <div id="map"></div>
                 <div class="col-lg-8">
-                    <h2 class="text-white mb-4">Built with Bootstrap 5</h2>
                 </div>
             </div>
-            <img class="img-fluid" src="assets/img/ipad.png" alt="..." />
         </div>
     </section>
-    <div class="container">
-        <h1>Tusheti Travel Map</h1>
-        <p style="text-align: center; color: #555;">An interactive visualization of your planned 5-day route through Tusheti, Georgia.</p>
-        <div id="map"></div>
-        <div class="info-box">
-            <h2>Route Details:</h2>
-            <ul>
-                <li><strong>Day 1 (Blue Line):</strong> Tbilisi &rarr; Kvemo Alvani (optional stop) &rarr; Abano Pass &rarr; Omalo</li>
-                <li><strong>Day 2 (Green Line):</strong> Omalo &rarr; Shenako &rarr; Diklo (Horseback riding loop from Omalo)</li>
-                <li><strong>Day 3 (Red Line):</strong> Omalo &rarr; Perekitian Gorge area (exploration) &rarr; Omalo</li>
-                <li><strong>Day 4 (Purple Line):</strong> Omalo &rarr; Bochorna &rarr; Dochu &rarr; Indurta (optional trek) &rarr; Omalo</li>
-                <li><strong>Day 5 (Orange Line):</strong> Omalo &rarr; Tbilisi (return journey, optional thermal springs)</li>
-            </ul>
-            <p><em>Please note: The precise GPS coordinates for some areas (like specific points within gorges) are approximate, and the actual route may vary slightly based on local conditions.</em></p>
+    <section>
+        <div class="container px-4 px-lg-5">
+            <div>
+                <h2>Route Details:</h2>
+                <ul>
+                    <li><strong>Day 1 (Blue Line):</strong> Tbilisi &rarr; Kvemo Alvani (optional stop) &rarr; Abano Pass &rarr; Omalo</li>
+                    <li><strong>Day 2 (Green Line):</strong> Omalo &rarr; Shenako &rarr; Diklo (Horseback riding loop from Omalo)</li>
+                    <li><strong>Day 3 (Red Line):</strong> Omalo &rarr; Perekitian Gorge area (exploration) &rarr; Omalo</li>
+                    <li><strong>Day 4 (Purple Line):</strong> Omalo &rarr; Bochorna &rarr; Dochu &rarr; Indurta (optional trek) &rarr; Omalo</li>
+                    <li><strong>Day 5 (Orange Line):</strong> Omalo &rarr; Tbilisi (return journey, optional thermal springs)</li>
+                </ul>
+                <p><em>Please note: The precise GPS coordinates for some areas (like specific points within gorges) are approximate, and the actual route may vary slightly based on local conditions.</em></p>
+            </div>
         </div>
-    </div>
+    </section>
+    <!-- Footer-->
+    <footer class="footer bg-black small text-center text-white-50">
+        <div class="container px-4 px-lg-5">
+            Copyright &copy; 2025
+        </div>
+    </footer>
 
     <!-- Leaflet JS library -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // Ensure the script runs after the DOM is fully loaded
+
         window.onload = function() {
             // Initialize the map centered on Georgia/Tusheti area
             const map = L.map('map', { scrollWheelZoom: false }).setView([42.3, 45.2], 9); // Initial view for Tusheti region
 
-            // Add a tile layer (CartoDB Positron, English labels)
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            // Define base layers
+            const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 subdomains: 'abcd',
                 maxZoom: 19
-            }).addTo(map);
+            });
+            const openTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 17
+            });
+            // Add default base layer
+            cartoPositron.addTo(map);
+
+            // Add layer control
+            const baseMaps = {
+                "Standard Map": cartoPositron,
+                "Topographic Map": openTopo
+            };
+            L.control.layers(baseMaps, null, { position: 'bottomright', collapsed: false }).addTo(map);
+        // ...existing code continues...
 
             // Enable scroll wheel zoom on map click/focus, disable on mouseleave
             map.on('focus', function() { map.scrollWheelZoom.enable(); });
@@ -150,8 +244,7 @@
             // Add markers to the map
             for (const key in locations) {
                 L.marker(locations[key]).addTo(map)
-                    .bindPopup(`<b>${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</b>`)
-                    .openPopup();
+                    .bindPopup(`<b>${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</b>`);
             }
 
             // Define routes for each day
