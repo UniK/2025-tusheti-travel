@@ -18,9 +18,13 @@
     <!-- Leaflet CSS for map styling -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/styles.css" />
     <style>
-        #map {
+        /* Ensure anchor scroll does not hide section under navbar */
+        section#map {
+            scroll-margin-top: 72px; /* Adjust to match navbar height */
+        }
+        #map-canvas {
             height: 500px; /* Default height */
             width: 100%;
             border-radius: 8px;
@@ -46,41 +50,41 @@
         }
 
         /* Custom Leaflet layer control for better mobile UX */
- .leaflet-control-layers {
-   min-width: 140px;
-   text-align: left;
-   font-size: 1em;
- }
- .leaflet-control-layers-expanded {
-   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-   border-radius: 10px;
-   padding: 0.5em 0.8em 0.5em 0.8em;
- }
- .leaflet-control-layers label {
-   display: block;
-   margin-bottom: 0.3em;
-   cursor: pointer;
- }
- .leaflet-control-layers input[type="radio"] {
-   margin-right: 0.5em;
-   transform: scale(1.2);
- }
- @media (max-width: 600px) {
-   .leaflet-control-layers {
-     min-width: 110px;
-     font-size: 1.1em;
-   }
-   .leaflet-control-layers-expanded {
-     padding: 0.7em 0.5em 0.7em 0.5em;
-   }
-   .leaflet-control-layers label {
-     margin-bottom: 0.5em;
-     font-size: 1.05em;
-   }
-   .leaflet-control-layers input[type="radio"] {
-     transform: scale(1.4);
-   }
- }
+        .leaflet-control-layers {
+        min-width: 140px;
+        text-align: left;
+        font-size: 1em;
+        }
+        .leaflet-control-layers-expanded {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        border-radius: 10px;
+        padding: 0.5em 0.8em 0.5em 0.8em;
+        }
+        .leaflet-control-layers label {
+        display: block;
+        margin-bottom: 0.3em;
+        cursor: pointer;
+        }
+        .leaflet-control-layers input[type="radio"] {
+        margin-right: 0.5em;
+        transform: scale(1.2);
+        }
+        @media (max-width: 600px) {
+        .leaflet-control-layers {
+            min-width: 110px;
+            font-size: 1.1em;
+        }
+        .leaflet-control-layers-expanded {
+            padding: 0.7em 0.5em 0.7em 0.5em;
+        }
+        .leaflet-control-layers label {
+            margin-bottom: 0.5em;
+            font-size: 1.05em;
+        }
+        .leaflet-control-layers input[type="radio"] {
+            transform: scale(1.4);
+        }
+        }
         /* Custom Leaflet layer control for better mobile UX */
         .leaflet-control-layers {
             min-width: 140px;
@@ -138,8 +142,8 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#map">Map</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#details">Details</a></li>
+                    <!-- <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li> -->
                 </ul>
             </div>
         </div>
@@ -150,27 +154,32 @@
             <div class="d-flex justify-content-center">
                 <div class="text-center">
                     <h1 class="mx-auto my-0 text-uppercase">Tusheti</h1>
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">A free, responsive, one page Bootstrap theme created by Start Bootstrap.</h2>
-                    <a class="btn btn-primary" href="#about">Get Started</a>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">
+                        Explore the wild beauty of Tusheti. 
+                        <p>Your 5-day adventure route through Georgia's remote mountain paradise.</p>
+                    </h2>
+                    <a class="btn btn-primary" href="#map">
+                        Get Started
+                    </a>
                 </div>
             </div>
         </div>
     </header>
     <!-- Map -->
-    <section class="text-center">
+    <section id="map" class="text-center bg-light">
         <div class="container px-4 px-lg-8">
             <h1>Tusheti Travel Map</h1>
             <p class="text-muted">
                 An interactive visualization of your planned 5-day route through Tusheti, Georgia.
             </p>
             <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div id="map"></div>
                 <div class="col-lg-8">
+                    <div id="map-canvas"></div>
                 </div>
             </div>
         </div>
     </section>
-    <section>
+    <section id="details">
         <div class="container px-4 px-lg-5">
             <div>
                 <h2>Route Details:</h2>
@@ -199,7 +208,8 @@
 
         window.onload = function() {
             // Initialize the map centered on Georgia/Tusheti area
-            const map = L.map('map', { scrollWheelZoom: false }).setView([42.3, 45.2], 9); // Initial view for Tusheti region
+            const map = L.map('map-canvas', { scrollWheelZoom: false })
+                .setView([42.3, 45.2], 9); // Initial view for Tusheti region
 
             // Define base layers
             const cartoPositron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -308,6 +318,20 @@
                 map.invalidateSize();
             });
         };
+    </script>
+</script>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
+        crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="scripts.js"></script>
+    <script>
+      // Prevent auto-scroll to #map on initial page load
+      if (window.location.hash === "#map") {
+        window.scrollTo(0, 0);
+        history.replaceState(null, null, window.location.pathname + window.location.search);
+      }
     </script>
 </body>
 </html>
